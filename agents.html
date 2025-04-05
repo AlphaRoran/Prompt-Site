@@ -86,10 +86,18 @@
       loadAgents();
     }
 
+    function useInBuilder(index) {
+      const agents = JSON.parse(localStorage.getItem('aiAgents')) || [];
+      const agent = agents[index];
+      localStorage.setItem('activeAgent', JSON.stringify(agent));
+      window.location.href = "index.html";
+    }
+
     function loadAgents() {
       const list = document.getElementById('agentList');
       const agents = JSON.parse(localStorage.getItem('aiAgents')) || [];
       list.innerHTML = '';
+
       agents.forEach((agent, i) => {
         const li = document.createElement('li');
         li.className = "p-3 border rounded bg-gray-100 dark:bg-gray-800";
@@ -97,10 +105,14 @@
         li.innerHTML = `
           <div class="flex justify-between items-center">
             <strong>${agent.name}</strong>
-            <button onclick="deleteAgent(${i})" class="text-red-500 text-sm">🗑 Delete</button>
+            <div class="flex gap-2">
+              <button onclick="useInBuilder(${i})" class="text-blue-500 text-sm">➡️ Use in Builder</button>
+              <button onclick="deleteAgent(${i})" class="text-red-500 text-sm">🗑 Delete</button>
+            </div>
           </div>
           <pre class="mt-2 whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">${JSON.stringify(agent, null, 2)}</pre>
         `;
+
         list.appendChild(li);
       });
     }
