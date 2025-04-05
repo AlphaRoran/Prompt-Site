@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Agent Factory</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = { darkMode: 'class' };
+  </script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white min-h-screen">
+
+  <div class="max-w-3xl mx-auto p-6">
+    <header class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">🤖 AI Agent Factory</h1>
+      <button id="darkToggle" class="px-4 py-1 rounded bg-gray-800 text-white dark:bg-white dark:text-black">
+        Toggle Theme
+      </button>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="mb-6 flex gap-4 text-lg">
+      <a href="index.html" class="hover:underline">Prompt Builder</a>
+      <a href="templates.html" class="hover:underline">Templates</a>
+      <a href="agents.html" class="hover:underline font-bold">AI Agents</a>
+    </nav>
+
+    <!-- Agent Creator -->
+    <div class="bg-gray-100 dark:bg-gray-800 p-4 rounded mb-6 space-y-2">
+      <h2 class="text-lg font-semibold">➕ Define a New Agent</h2>
+      <input id="agentName" class="w-full p-2 border rounded dark:bg-gray-900 dark:text-white" placeholder="Agent Name (e.g., ResearchBot)" />
+      <input id="agentRole" class="w-full p-2 border rounded dark:bg-gray-900 dark:text-white" placeholder="Role or Persona (e.g., expert analyst)" />
+      <textarea id="agentTask" class="w-full p-2 border rounded h-20 dark:bg-gray-900 dark:text-white" placeholder="Main Task or Behavior (e.g., summarize documents, generate insights)"></textarea>
+      <textarea id="agentTools" class="w-full p-2 border rounded h-20 dark:bg-gray-900 dark:text-white" placeholder="Tools this agent can use (e.g., search, code interpreter, database access)"></textarea>
+      <textarea id="agentGoals" class="w-full p-2 border rounded h-20 dark:bg-gray-900 dark:text-white" placeholder="Optional: Specific Goals or Mission Objectives"></textarea>
+      <button onclick="saveAgent()" class="w-full bg-blue-600 text-white px-4 py-2 rounded">💾 Save Agent</button>
+    </div>
+
+    <!-- Agent List -->
+    <div>
+      <h2 class="text-lg font-semibold mb-2">🧠 Saved Agents</h2>
+      <ul id="agentList" class="space-y-3"></ul>
+    </div>
+
+    <!-- Export / Import -->
+    <div class="mt-8 flex flex-col md:flex-row gap-4">
+      <button onclick="exportAgents()" class="bg-green-700 text-white px-4 py-2 rounded w-full">📤 Export Agents (JSON)</button>
+      <input type="file" id="importFile" onchange="importAgents()" class="block text-sm text-gray-500 dark:text-gray-400">
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('darkToggle').addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
+
+    function saveAgent() {
+      const agent = {
+        name: document.getElementById('agentName').value.trim(),
+        role: document.getElementById('agentRole').value.trim(),
+        task: document.getElementById('agentTask').value.trim(),
+        tools: document.getElementById('agentTools').value.trim(),
+        goals: document.getElementById('agentGoals').value.trim()
+      };
+
+      if (!agent.name || !agent.role || !agent.task) return alert("Name, role, and task are required.");
+
+      const agents = JSON.parse(localStorage.getItem('aiAgents')) || [];
+      agents.push(agent);
+      localStorage.setItem('aiAgents', JSON.stringify(agents));
+      clearAgentForm();
+      loadAgents();
+    }
+
+    function clearAgentForm() {
+      ['agentName', 'agentRole', 'agentTask', 'agentTools', 'agentGoals'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+    }
+
+    function deleteAgent(index) {
+      const agents = JSON.parse(localStorage.getItem('aiAgents')) || [];
+      agents.splice(index, 1);
+      localStorage.setItem('aiAgents', JSON.stringify(agents));
+      loadAgents();
+    }
+
+    function loadAgents() {
+      const list = document.getElementById('agentList');
+      const agents = JSON.parse(localStorage.getItem('aiAgents')) || [];
+      list.innerHTML = '';
+      agents.forEach((agent, i) => {
+        const li = document.createElement('li');
+        li.className = "p-3 border rounded bg-gray-100 dark:bg-gray-800";
+
+        li.innerHTML = `
+          <div class="flex justify-between items-center">
+            <strong>${agent.name}</strong>
+            <button onclick="deleteAgent(${i})" class="text-red-500 text-sm">🗑 Delete</button>
+          </div>
+          <pre class="mt-2 whitespace-pre-wrap text-sm text-gray-700 dark:text-gray-300">${JSON.stringify(agent, null, 2)}</pre>
+        `;
+        list.appendChild(li);
+      });
+    }
+
+    function exportAgents() {
+      const agents = localStorage.getItem('aiAgents');
+      const blob = new Blob([agents], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "ai-agents.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function importAgents() {
+      const file = document.getElementById("importFile").files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        try {
+          const data = JSON.parse(e.target.result);
+          localStorage.setItem("aiAgents", JSON.stringify(data));
+          loadAgents();
+          alert("✅ Agents imported!");
+        } catch (err) {
+          alert("Invalid JSON file.");
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    loadAgents();
+  </script>
+</body>
+</html>
