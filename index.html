@@ -1,4 +1,3 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en" class="dark">
 <head>
@@ -6,10 +5,7 @@
   <title>Prompt Builder</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
-    // Tailwind dark mode config
-    tailwind.config = {
-      darkMode: 'class',
-    };
+    tailwind.config = { darkMode: 'class' };
   </script>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -25,65 +21,171 @@
 
     <!-- Navigation Tabs -->
     <nav class="mb-8 flex gap-4 text-lg">
-      <a href="index.html" class="hover:underline">Prompt Builder</a>
+      <a href="index.html" class="hover:underline font-bold">Prompt Builder</a>
       <a href="templates.html" class="hover:underline">Templates</a>
       <a href="agents.html" class="hover:underline">AI Agents</a>
     </nav>
 
-    <!-- MAIN APP GOES HERE -->
-    <div id="<!-- Prompt Builder UI -->
-<div class="space-y-6">
-  <!-- Dropdowns -->
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-    <div>
-      <label class="font-semibold">Persona</label>
-      <select id="persona" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
-      <input id="newPersona" type="text" placeholder="Add new persona" class="mt-2 w-full p-2 border rounded" />
-      <button onclick="addOption('persona', 'newPersona')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Persona</button>
-    </div>
+    <!-- Main UI -->
+    <div class="space-y-6">
+      <!-- Dropdowns -->
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label class="font-semibold">Persona</label>
+          <select id="persona" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+          <input id="newPersona" type="text" placeholder="Add new persona" class="mt-2 w-full p-2 border rounded dark:bg-gray-900 dark:text-white" />
+          <button onclick="addOption('persona', 'newPersona')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Persona</button>
+        </div>
 
-    <div>
-      <label class="font-semibold">Goal</label>
-      <select id="goal" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
-      <input id="newGoal" type="text" placeholder="Add new goal" class="mt-2 w-full p-2 border rounded" />
-      <button onclick="addOption('goal', 'newGoal')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Goal</button>
+        <div>
+          <label class="font-semibold">Goal</label>
+          <select id="goal" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+          <input id="newGoal" type="text" placeholder="Add new goal" class="mt-2 w-full p-2 border rounded dark:bg-gray-900 dark:text-white" />
+          <button onclick="addOption('goal', 'newGoal')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Goal</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+        <div>
+          <label class="font-semibold">Context</label>
+          <select id="context" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+          <input id="newContext" type="text" placeholder="Add new context" class="mt-2 w-full p-2 border rounded dark:bg-gray-900 dark:text-white" />
+          <button onclick="addOption('context', 'newContext')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Context</button>
+        </div>
+
+        <div>
+          <label class="font-semibold">Tone / Style</label>
+          <select id="tone" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+          <input id="newTone" type="text" placeholder="Add new tone" class="mt-2 w-full p-2 border rounded dark:bg-gray-900 dark:text-white" />
+          <button onclick="addOption('tone', 'newTone')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Tone</button>
+        </div>
+      </div>
+
+      <!-- Output & Actions -->
+      <div>
+        <label class="font-semibold">Generated Prompt</label>
+        <textarea id="output" class="w-full p-4 border rounded dark:bg-gray-800 dark:text-white h-32" readonly></textarea>
+
+        <!-- Title for Saving -->
+        <input id="promptTitle" type="text" placeholder="Give this prompt a short name..." class="mt-4 w-full p-2 border rounded dark:bg-gray-900 dark:text-white" />
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+          <button onclick="generatePrompt()" class="bg-green-600 text-white py-2 rounded">⚡ Generate</button>
+          <button onclick="copyPrompt()" class="bg-yellow-500 text-white py-2 rounded">📋 Copy</button>
+          <button onclick="saveToHistory()" class="bg-purple-700 text-white py-2 rounded">💾 Save to History</button>
+        </div>
+      </div>
+
+      <!-- Prompt History -->
+      <div>
+        <h3 class="text-lg font-bold mt-6 mb-2">🕘 Prompt History</h3>
+        <ul id="historyList" class="space-y-2 text-sm"></ul>
+      </div>
     </div>
   </div>
 
-  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
-    <div>
-      <label class="font-semibold">Context</label>
-      <select id="context" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
-      <input id="newContext" type="text" placeholder="Add new context" class="mt-2 w-full p-2 border rounded" />
-      <button onclick="addOption('context', 'newContext')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Context</button>
-    </div>
+  <script>
+    document.getElementById('darkToggle')?.addEventListener('click', () => {
+      document.documentElement.classList.toggle('dark');
+    });
 
-    <div>
-      <label class="font-semibold">Tone / Style</label>
-      <select id="tone" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
-      <input id="newTone" type="text" placeholder="Add new tone" class="mt-2 w-full p-2 border rounded" />
-      <button onclick="addOption('tone', 'newTone')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Tone</button>
-    </div>
-  </div>
+    const defaultOptions = {
+      persona: ["Marketing Expert", "AI Strategist", "Startup Founder"],
+      goal: ["Create a product idea", "Write landing page copy", "Build a content strategy"],
+      context: ["For Gen Z", "With emotional appeal", "Focused on speed and efficiency"],
+      tone: ["Professional", "Conversational", "Energetic", "Witty"]
+    };
 
-  <!-- Output & Actions -->
-  <div>
-    <label class="font-semibold">Generated Prompt</label>
-    <textarea id="output" class="w-full p-4 border rounded dark:bg-gray-800 dark:text-white h-32" readonly></textarea>
+    function loadOptions() {
+      for (let key in defaultOptions) {
+        const select = document.getElementById(key);
+        if (!select) continue;
+        const saved = JSON.parse(localStorage.getItem(key)) || defaultOptions[key];
+        select.innerHTML = '';
+        saved.forEach(val => {
+          const opt = document.createElement('option');
+          opt.value = val;
+          opt.textContent = val;
+          select.appendChild(opt);
+        });
+      }
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-      <button onclick="generatePrompt()" class="bg-green-600 text-white py-2 rounded">⚡ Generate</button>
-      <button onclick="copyPrompt()" class="bg-yellow-500 text-white py-2 rounded">📋 Copy</button>
-      <button onclick="saveToHistory()" class="bg-purple-700 text-white py-2 rounded">💾 Save to History</button>
-    </div>
-  </div>
+      // Agent injection
+      const active = localStorage.getItem('activeAgent');
+      if (active) {
+        const agent = JSON.parse(active);
+        if (agent.role) document.getElementById('persona').value = agent.role;
+        if (agent.task) document.getElementById('goal').value = agent.task;
+        if (agent.goals) document.getElementById('context').value = agent.goals;
+        generatePrompt();
+        localStorage.removeItem('activeAgent');
+        alert(`🚀 Agent "${agent.name}" loaded into Prompt Builder`);
+      }
 
-  <!-- Prompt History -->
-  <div>
-    <h3 class="text-lg font-bold mt-6 mb-2">🕘 Prompt History</h3>
-    <ul id="historyList" class="space-y-2 text-sm"></ul>
-  </div>
-</div>
-  <script src="app.js"></script>
+      loadHistory();
+    }
+
+    function addOption(selectId, inputId) {
+      const input = document.getElementById(inputId);
+      const value = input.value.trim();
+      if (!value) return;
+      const currentList = JSON.parse(localStorage.getItem(selectId)) || defaultOptions[selectId];
+      if (!currentList.includes(value)) {
+        currentList.push(value);
+        localStorage.setItem(selectId, JSON.stringify(currentList));
+        loadOptions();
+      }
+      input.value = '';
+    }
+
+    function generatePrompt() {
+      const persona = document.getElementById('persona').value;
+      const goal = document.getElementById('goal').value;
+      const context = document.getElementById('context').value;
+      const tone = document.getElementById('tone').value;
+
+      const prompt = `You are a ${persona}. Your task is to ${goal}. Use the following context: ${context}. Speak in a ${tone} tone. Provide the response in a structured and concise format.`;
+      document.getElementById('output').value = prompt;
+    }
+
+    function copyPrompt() {
+      const output = document.getElementById('output');
+      output.select();
+      document.execCommand('copy');
+      alert("✅ Prompt copied to clipboard!");
+    }
+
+    function saveToHistory() {
+      const history = JSON.parse(localStorage.getItem('promptHistory')) || [];
+      const prompt = document.getElementById('output').value;
+      const title = document.getElementById('promptTitle').value.trim() || `Prompt ${history.length + 1}`;
+      if (!prompt.trim()) return;
+
+      history.unshift({ title, prompt });
+      if (history.length > 10) history.pop();
+      localStorage.setItem('promptHistory', JSON.stringify(history));
+      loadHistory();
+      document.getElementById('promptTitle').value = '';
+    }
+
+    function loadHistory() {
+      const list = document.getElementById('historyList');
+      if (!list) return;
+      const history = JSON.parse(localStorage.getItem('promptHistory')) || [];
+      list.innerHTML = '';
+
+      history.forEach(({ title, prompt }) => {
+        const item = document.createElement('li');
+        item.className = 'p-2 border rounded bg-gray-100 dark:bg-gray-800 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700';
+        item.innerHTML = `<strong>${title}</strong>`;
+        item.onclick = () => {
+          document.getElementById('output').value = prompt;
+        };
+        list.appendChild(item);
+      });
+    }
+
+    loadOptions();
+  </script>
 </body>
 </html>
