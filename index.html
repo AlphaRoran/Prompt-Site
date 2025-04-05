@@ -1,164 +1,42 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8">
-  <title>Prompt Builder v3</title>
+  <title>Prompt Builder</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Tailwind dark mode config
+    tailwind.config = {
+      darkMode: 'class',
+    };
+  </script>
+  <link rel="stylesheet" href="style.css" />
 </head>
-<body class="bg-gray-100 p-6">
+<body class="bg-white dark:bg-gray-900 text-black dark:text-white min-h-screen transition-colors">
 
-  <div class="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-8">
-    <h2 class="text-2xl font-bold mb-6 text-center">🧠 Prompt Builder v3</h2>
+  <div class="max-w-3xl mx-auto p-6">
+    <header class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">🧠 Prompt Builder</h1>
+      <button id="darkToggle" class="px-4 py-1 rounded bg-gray-800 text-white dark:bg-white dark:text-black">
+        Toggle Theme
+      </button>
+    </header>
 
-    <!-- Persona -->
-    <label class="font-semibold">Persona</label>
-    <select id="persona" class="w-full p-2 border rounded mb-2"></select>
-    <div class="flex gap-2 mb-4">
-      <input id="newPersona" type="text" placeholder="Add new persona" class="flex-1 p-2 border rounded" />
-      <button onclick="addOption('persona', 'newPersona')" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
+    <!-- Navigation Tabs -->
+    <nav class="mb-8 flex gap-4 text-lg">
+      <a href="index.html" class="hover:underline">Prompt Builder</a>
+      <a href="templates.html" class="hover:underline">Templates</a>
+      <a href="agents.html" class="hover:underline">AI Agents</a>
+    </nav>
+
+    <!-- MAIN APP GOES HERE -->
+    <div id="app">
+      <!-- We'll drop the builder UI here next -->
+      <p class="text-gray-500 dark:text-gray-400">Prompt builder interface will go here...</p>
     </div>
-
-    <!-- Goal -->
-    <label class="font-semibold">Goal / Task</label>
-    <select id="goal" class="w-full p-2 border rounded mb-2"></select>
-    <div class="flex gap-2 mb-4">
-      <input id="newGoal" type="text" placeholder="Add new goal/task" class="flex-1 p-2 border rounded" />
-      <button onclick="addOption('goal', 'newGoal')" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
-    </div>
-
-    <!-- Context -->
-    <label class="font-semibold">Context</label>
-    <select id="context" class="w-full p-2 border rounded mb-2"></select>
-    <div class="flex gap-2 mb-4">
-      <input id="newContext" type="text" placeholder="Add new context" class="flex-1 p-2 border rounded" />
-      <button onclick="addOption('context', 'newContext')" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
-    </div>
-
-    <!-- Tone/Style -->
-    <label class="font-semibold">Tone / Style</label>
-    <select id="tone" class="w-full p-2 border rounded mb-2"></select>
-    <div class="flex gap-2 mb-4">
-      <input id="newTone" type="text" placeholder="Add new tone/style" class="flex-1 p-2 border rounded" />
-      <button onclick="addOption('tone', 'newTone')" class="bg-blue-500 text-white px-4 py-2 rounded">Add</button>
-    </div>
-
-    <!-- Output -->
-    <label class="font-semibold">Generated Prompt</label>
-    <textarea id="output" class="w-full p-4 border rounded mb-4 h-40" readonly></textarea>
-
-    <!-- Buttons -->
-    <div class="grid grid-cols-2 gap-4 mb-2">
-      <button onclick="generatePrompt()" class="bg-green-600 text-white py-2 rounded">⚡ Generate</button>
-      <button onclick="copyPrompt()" class="bg-yellow-500 text-white py-2 rounded">📋 Copy</button>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4 mb-4">
-      <button onclick="savePrompt()" class="bg-purple-600 text-white py-2 rounded">💾 Save .txt</button>
-      <button onclick="exportJSON()" class="bg-gray-800 text-white py-2 rounded">📤 Export JSON</button>
-    </div>
-
-    <label class="block text-sm font-semibold mb-1">Import Dropdowns (.json):</label>
-    <input type="file" id="importFile" onchange="importJSON()" class="block w-full mb-4" />
-
   </div>
 
-  <script>
-    const defaultOptions = {
-      persona: ["Marketing Expert", "Senior Software Engineer", "Creative Director", "AI Strategist"],
-      goal: ["Write ad copy", "Build a basic app", "Create a launch plan", "Summarize a book"],
-      context: ["For Gen Z", "For busy entrepreneurs", "For beginners", "In a futuristic tone"],
-      tone: ["Professional", "Conversational", "Inspiring", "Witty", "Direct"]
-    };
-
-    function loadOptions() {
-      for (let key in defaultOptions) {
-        const saved = JSON.parse(localStorage.getItem(key)) || defaultOptions[key];
-        const select = document.getElementById(key);
-        select.innerHTML = '';
-        saved.forEach(option => {
-          const opt = document.createElement('option');
-          opt.value = option;
-          opt.textContent = option;
-          select.appendChild(opt);
-        });
-      }
-    }
-
-    function addOption(selectId, inputId) {
-      const input = document.getElementById(inputId);
-      const value = input.value.trim();
-      if (!value) return;
-      const currentList = JSON.parse(localStorage.getItem(selectId)) || defaultOptions[selectId];
-      if (!currentList.includes(value)) {
-        currentList.push(value);
-        localStorage.setItem(selectId, JSON.stringify(currentList));
-        loadOptions();
-      }
-      input.value = '';
-    }
-
-    function generatePrompt() {
-      const persona = document.getElementById('persona').value;
-      const goal = document.getElementById('goal').value;
-      const context = document.getElementById('context').value;
-      const tone = document.getElementById('tone').value;
-
-      const prompt = `You are a ${persona}. Your job is to ${goal}. Use the following context: ${context}. Use a ${tone} tone. Return the answer in a clear, concise format.`;
-
-      document.getElementById('output').value = prompt;
-    }
-
-    function copyPrompt() {
-      const output = document.getElementById('output');
-      output.select();
-      document.execCommand('copy');
-      alert('✅ Prompt copied to clipboard!');
-    }
-
-    function savePrompt() {
-      const blob = new Blob([document.getElementById('output').value], { type: "text/plain;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "prompt.txt";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function exportJSON() {
-      const data = {};
-      for (let key in defaultOptions) {
-        data[key] = JSON.parse(localStorage.getItem(key)) || defaultOptions[key];
-      }
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "prompt-builder-data.json";
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importJSON() {
-      const fileInput = document.getElementById("importFile");
-      const file = fileInput.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const data = JSON.parse(e.target.result);
-        for (let key in data) {
-          if (defaultOptions[key]) {
-            localStorage.setItem(key, JSON.stringify(data[key]));
-          }
-        }
-        loadOptions();
-        alert("✅ Data imported!");
-      };
-      reader.readAsText(file);
-    }
-
-    loadOptions();
-  </script>
-
+  <script src="app.js"></script>
 </body>
 </html>
