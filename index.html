@@ -31,7 +31,60 @@
     </nav>
 
     <!-- MAIN APP GOES HERE -->
-    <div id="app">
+    <div id="<!-- Prompt Builder UI -->
+<div class="space-y-6">
+  <!-- Dropdowns -->
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div>
+      <label class="font-semibold">Persona</label>
+      <select id="persona" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+      <input id="newPersona" type="text" placeholder="Add new persona" class="mt-2 w-full p-2 border rounded" />
+      <button onclick="addOption('persona', 'newPersona')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Persona</button>
+    </div>
+
+    <div>
+      <label class="font-semibold">Goal</label>
+      <select id="goal" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+      <input id="newGoal" type="text" placeholder="Add new goal" class="mt-2 w-full p-2 border rounded" />
+      <button onclick="addOption('goal', 'newGoal')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Goal</button>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <div>
+      <label class="font-semibold">Context</label>
+      <select id="context" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+      <input id="newContext" type="text" placeholder="Add new context" class="mt-2 w-full p-2 border rounded" />
+      <button onclick="addOption('context', 'newContext')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Context</button>
+    </div>
+
+    <div>
+      <label class="font-semibold">Tone / Style</label>
+      <select id="tone" class="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"></select>
+      <input id="newTone" type="text" placeholder="Add new tone" class="mt-2 w-full p-2 border rounded" />
+      <button onclick="addOption('tone', 'newTone')" class="mt-1 bg-blue-500 text-white px-4 py-2 rounded w-full">Add Tone</button>
+    </div>
+  </div>
+
+  <!-- Output & Actions -->
+  <div>
+    <label class="font-semibold">Generated Prompt</label>
+    <textarea id="output" class="w-full p-4 border rounded dark:bg-gray-800 dark:text-white h-32" readonly></textarea>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+      <button onclick="generatePrompt()" class="bg-green-600 text-white py-2 rounded">⚡ Generate</button>
+      <button onclick="copyPrompt()" class="bg-yellow-500 text-white py-2 rounded">📋 Copy</button>
+      <button onclick="saveToHistory()" class="bg-purple-700 text-white py-2 rounded">💾 Save to History</button>
+    </div>
+  </div>
+
+  <!-- Prompt History -->
+  <div>
+    <h3 class="text-lg font-bold mt-6 mb-2">🕘 Prompt History</h3>
+    <ul id="historyList" class="space-y-2 text-sm"></ul>
+  </div>
+</div>
+">
       <!-- We'll drop the builder UI here next -->
       <p class="text-gray-500 dark:text-gray-400">Prompt builder interface will go here...</p>
     </div>
