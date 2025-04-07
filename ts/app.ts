@@ -42,13 +42,11 @@ interface DataStore {
   promptHistory: PromptHistory[];
 }
 
-// Simple storage interface
 class StorageUtil {
   static get<T>(key: string, defaultValue: T): T {
     const data = localStorage.getItem(key);
     return data ? (JSON.parse(data) as T) : defaultValue;
   }
-
   static set<T>(key: string, value: T): void {
     localStorage.setItem(key, JSON.stringify(value));
   }
@@ -72,7 +70,6 @@ function generateIdTS(): string {
   return "_" + Math.random().toString(36).substr(2, 9);
 }
 
-// Export Data function in TypeScript
 function exportDataTS(): void {
   const dataStr = JSON.stringify(DataTS, null, 2);
   const blob = new Blob([dataStr], { type: "application/json" });
@@ -84,6 +81,3 @@ function exportDataTS(): void {
   a.click();
   document.body.removeChild(a);
 }
-
-// Other TypeScript functions would mirror the JavaScript version.
-// This file is provided as a type-safe reference and can be compiled with tsc.
