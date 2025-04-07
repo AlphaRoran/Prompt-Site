@@ -106,7 +106,7 @@ function renderPromptBuilder() {
           <button id="generate-prompt-btn" class="btn btn-success mb-3">Generate Prompt</button>
           <button id="copy-prompt-btn" class="btn btn-secondary mb-3">Copy to Clipboard</button>
           <h5>Generated Prompt:</h5>
-          <pre id="generated-prompt" style="background: #f0f0f0; padding: 10px;"></pre>
+          <pre id="generated-prompt" style="background: #A9A9A9; padding: 10px;"></pre>
         </div>
       </div>
   `;
