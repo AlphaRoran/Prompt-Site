@@ -38,4 +38,11 @@ body.dark-mode .draggable-item:hover {
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+  background: #f0f0f0;
+  padding: 10px;
+  color: #212529;
+}
+body.dark-mode pre {
+  background: #333;   /* Darker background for contrast */
+  color: #f8f9fa;     /* Lighter text for readability */
 }
