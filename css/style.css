@@ -1,0 +1,41 @@
+/* css/style.css */
+body.light-mode {
+  background-color: #f8f9fa;
+  color: #212529;
+}
+body.dark-mode {
+  background-color: #212529;
+  color: #f8f9fa;
+}
+.navbar,
+.card {
+  transition: background-color 0.3s, color 0.3s;
+}
+.drop-zone {
+  min-height: 200px;
+  border: 2px dashed #ccc;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+.draggable-item {
+  cursor: grab;
+  margin: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #e9ecef;
+}
+body.dark-mode .draggable-item {
+  background-color: #343a40;
+  border-color: #555;
+}
+.draggable-item:hover {
+  background-color: #d4d4d4;
+}
+body.dark-mode .draggable-item:hover {
+  background-color: #495057;
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
