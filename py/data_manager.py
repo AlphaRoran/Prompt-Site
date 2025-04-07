@@ -30,7 +30,6 @@ def main():
         data = load_data(filename)
         print(json.dumps(data, indent=2))
     elif command == "save":
-        # For demonstration, we'll save an empty structure
         data = {
             "promptParts": {"persona": [], "goal": [], "context": [], "tone": []},
             "templates": [],
