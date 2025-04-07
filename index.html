@@ -1,61 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Prompt Engineering Master</title>
-  <!-- Link to external CSS -->
-  <link rel="stylesheet" href="css/style.css" />
-  <!-- Bootstrap CSS CDN for layout and components -->
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
-</head>
-<body class="light-mode">
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Prompt Master</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarNav"
-        aria-controls="navbarNav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link" href="#prompt-builder">Prompt Builder</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#template-library">Template Library</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#agent-factory">Agent Factory</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#library">Library</a>
-          </li>
-        </ul>
-        <button id="theme-toggle" class="btn btn-outline-secondary">
-          Toggle Dark Mode
-        </button>
-      </div>
+<!-- Prompt Parts Library and New Part Form -->
+<div class="col-md-4">
+  <h4>Prompt Parts Library</h4>
+  <div id="prompt-parts-library">
+    <!-- This will be filled dynamically -->
+  </div>
+  <hr>
+  <h5>Add / Edit Prompt Part</h5>
+  <form id="new-prompt-part-form">
+    <!-- Hidden field to hold part id when editing -->
+    <input type="hidden" id="part-id">
+    <div class="mb-3">
+      <label for="part-type" class="form-label">Type</label>
+      <select id="part-type" class="form-select" required>
+        <option value="">Select type</option>
+        <option value="persona">Persona</option>
+        <option value="goal">Goal</option>
+        <option value="context">Context</option>
+        <option value="tone">Tone</option>
+      </select>
     </div>
-  </nav>
-
-  <!-- Main Content Container -->
-  <div class="container" id="content"></div>
-
-  <!-- Bootstrap JS (for navbar toggling) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Our App JavaScript -->
-  <script src="js/app.js"></script>
-</body>
-</html>
+    <div class="mb-3">
+      <label for="part-nickname" class="form-label">Nickname</label>
+      <input type="text" id="part-nickname" class="form-control" required>
+    </div>
+    <div class="mb-3">
+      <label for="part-text" class="form-label">Full Text</label>
+      <textarea id="part-text" class="form-control" rows="3" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Add Part</button>
+  </form>
+</div>
