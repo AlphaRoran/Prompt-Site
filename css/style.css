@@ -39,6 +39,7 @@ h2, h4, h5 {
   border-radius: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
   margin-bottom: 20px;
+  background-color: inherit;
 }
 
 .drop-zone {
@@ -110,10 +111,6 @@ pre {
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.float-end button {
-  margin-left: 5px;
 }
 
 /* Footer styling */
